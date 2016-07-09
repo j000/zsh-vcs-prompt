@@ -412,7 +412,7 @@ function _zsh_vcs_prompt_set_sigil() {
         echo "$2"
         return
     fi
-    echo "$2$1"
+    echo "$1$2"
 }
 
 
