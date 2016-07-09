@@ -30,14 +30,14 @@ fi
 zstyle ':vcs_info:*' enable git svn hg bzr
 
 # Specify the command path to git used by VCS_INFO.
-zstyle ':vcs_info:git:*:-all-' command =git
+zstyle ':vcs_info:(git|git-svn):*:-all-' command =git
 
 # The maximum number of vcs_info_msg_*_ variables.
 zstyle ':vcs_info:*' max-exports 5
 
 # To be enable check-for-changes with hg.
 zstyle ':vcs_info:hg:*' get-revision true
-zstyle ':vcs_info:(git|hg|bzr):*' use-simple true
+zstyle ':vcs_info:(git|hg|bzr|git-svn):*' use-simple true
 
 ## Set formats.
 #
@@ -54,7 +54,8 @@ zstyle ':vcs_info:(git|hg|bzr):*' use-simple true
 zstyle ':vcs_info:*' formats '%s' '%b' '%m'
 zstyle ':vcs_info:*' actionformats '%s' '%b' '%m' '%a'
 
-zstyle ':vcs_info:(git|hg):*' check-for-changes false
+#zstyle ':vcs_info:(git|hg|git-svn):*' check-for-changes false
+zstyle ':vcs_info:*:*' check-for-changes false
 
 
 # Check zsh version.
@@ -63,7 +64,7 @@ if ! type is-at-least > /dev/null 2>&1; then
 fi
 if is-at-least 4.3.11; then
     # Register the hook function.
-    zstyle ':vcs_info:git+set-message:*' hooks git-hook-detail-info
+    zstyle ':vcs_info:(git|git-svn)+set-message:*' hooks git-hook-detail-info
 fi
 
 function _zsh_vcs_prompt_vcs_detail_info() {
@@ -87,7 +88,7 @@ function _zsh_vcs_prompt_vcs_detail_info() {
     if is-at-least 4.3.11; then
         git_status=$vcs_info_msg_2_
     else
-        if [ "$vcs_name" = 'git' ]; then
+        if [ "$vcs_name" = 'git' -o "$vcs_name" = 'git-svn' ]; then
             git_status=$(_zsh_vcs_prompt_get_git_status "$vcs_branch_name")
         fi
     fi

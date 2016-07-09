@@ -320,7 +320,7 @@ function _zsh_vcs_prompt_update_vcs_status() {
 
     # Select formats.
     local used_formats
-    if [ "$vcs_name" = 'git' ]; then
+    if [ "$vcs_name" = 'git' -o "$vcs_name" = 'git-svn' ]; then
         used_formats=$ZSH_VCS_PROMPT_GIT_ACTION_FORMATS
         # Check action.
         if [ -z "$action" -o "$action" = '0' ]; then
@@ -341,7 +341,8 @@ function _zsh_vcs_prompt_update_vcs_status() {
     fi
 
     # Escape slash '/'.
-    branch=$(echo "$branch" | sed 's%/%\\/%g')
+    #branch=$(echo "$branch" | sed 's%/%\\/%g')
+    branch=${branch//\//\\\\\\/}
     # Set unmerged count.
     if [ -n "$unmerged" -a "$unmerged" != '0' ]; then
         branch="${branch}(${unmerged})"
